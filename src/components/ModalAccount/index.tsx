@@ -7,10 +7,9 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
 import { useEthers } from "@usedapp/core";
@@ -21,7 +20,7 @@ type Props = {
   onClose: any;
 };
 
-export default function ModalAccount({ isOpen, onClose }: Props) {
+export default function AccountModal({ isOpen, onClose }: Props) {
   const { account, deactivate } = useEthers();
 
   function handleDeactivateAccount() {
@@ -46,7 +45,7 @@ export default function ModalAccount({ isOpen, onClose }: Props) {
           color="white"
           fontSize="sm"
           _hover={{
-            color: "whiteAlpha.700",
+            color: "whiteAlpha.700"
           }}
         />
         <ModalBody pt={0} px={4}>
@@ -77,7 +76,7 @@ export default function ModalAccount({ isOpen, onClose }: Props) {
                 _hover={{
                   background: "none",
                   borderColor: "blue.300",
-                  textDecoration: "underline",
+                  textDecoration: "underline"
                 }}
                 onClick={handleDeactivateAccount}
               >
@@ -108,7 +107,7 @@ export default function ModalAccount({ isOpen, onClose }: Props) {
                 fontSize="sm"
                 _hover={{
                   textDecoration: "none",
-                  color: "whiteAlpha.800",
+                  color: "whiteAlpha.800"
                 }}
               >
                 <CopyIcon mr={1} />
@@ -124,7 +123,7 @@ export default function ModalAccount({ isOpen, onClose }: Props) {
                 ml={6}
                 _hover={{
                   color: "whiteAlpha.800",
-                  textDecoration: "underline",
+                  textDecoration: "underline"
                 }}
               >
                 <ExternalLinkIcon mr={1} />
@@ -133,23 +132,6 @@ export default function ModalAccount({ isOpen, onClose }: Props) {
             </Flex>
           </Box>
         </ModalBody>
-
-        <ModalFooter
-          justifyContent="end"
-          background="gray.700"
-          borderBottomLeftRadius="3xl"
-          borderBottomRightRadius="3xl"
-          p={6}
-        >
-          <Text
-            color="white"
-            textAlign="left"
-            fontWeight="medium"
-            fontSize="md"
-          >
-            Your transactions willl appear here...
-          </Text>
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );
