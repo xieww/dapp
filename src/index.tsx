@@ -1,4 +1,5 @@
 import { ColorModeScript } from "@chakra-ui/react"
+import { DAppProvider } from "@usedapp/core"
 import * as React from "react"
 import ReactDOM from "react-dom"
 import { App } from "./App"
@@ -8,7 +9,9 @@ import * as serviceWorker from "./serviceWorker"
 ReactDOM.render(
   <React.StrictMode>
     <ColorModeScript />
-    <App />
+    <DAppProvider config={{}}>
+      <App />
+    </DAppProvider>
   </React.StrictMode>,
   document.getElementById("root"),
 )
