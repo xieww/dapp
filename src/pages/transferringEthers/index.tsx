@@ -42,6 +42,7 @@ const TransferringEthers: React.FC = () => {
     }
   }, [amount, receipent])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const toastMessage = (values: any) => {
     toast({
       title: `${values?.errorMessage}`,
@@ -56,7 +57,7 @@ const TransferringEthers: React.FC = () => {
       setIsLoading(false);
       toastMessage(state);
     }
-  }, [state])
+  }, [state, toastMessage])
 
   useEffect(() => {
     if (etherBalance && amount) {
