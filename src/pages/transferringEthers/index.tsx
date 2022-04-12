@@ -1,7 +1,9 @@
 import { Box, Button, Center, Flex, FormControl, Input, InputGroup, NumberInput, NumberInputField, useMediaQuery, useToast } from "@chakra-ui/react";
-import { useSendTransaction } from "@usedapp/core";
+import { useEtherBalance, useEthers, useSendTransaction } from "@usedapp/core";
 import { utils } from "ethers";
 import { useEffect, useState } from "react";
+import { formatEther } from "@ethersproject/units";
+
 const STATUS_CONFIG: any = {
   "Success": 'success',
   "Exception": 'error',
@@ -12,10 +14,14 @@ const TransferringEthers: React.FC = () => {
   const [amount, setAmount] = useState<number>(0);
   const [receipent, setReceipent] = useState<string>('');
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isTablet] = useMediaQuery("(min-width: 750px)");
   const [isMobile] = useMediaQuery("(min-width: 320px)");
   const { sendTransaction, state } = useSendTransaction();
-  const toast = useToast()
+  const { account } = useEthers();
+  const etherBalance = useEtherBalance(account);
+  const toast = useToast();
+  const [buttonText,setButtonText] = useState<string>('转移');
 
   const handleAmountInputChange = (e: any) => {
     setAmount(e?.target?.value);
@@ -26,12 +32,14 @@ const TransferringEthers: React.FC = () => {
   }
 
   const handleTransfer = () => {
-    setDisabledButton(true);
+    setIsLoading(true);
     sendTransaction({ to: receipent, value: utils.parseEther(amount.toString()) });
   }
 
   useEffect(() => {
-    setDisabledButton(!amount && !receipent);
+    if (amount > 0 && receipent) {
+      setDisabledButton(false);
+    }
   }, [amount, receipent])
 
   const toastMessage = (values: any) => {
@@ -44,14 +52,24 @@ const TransferringEthers: React.FC = () => {
   }
 
   useEffect(() => {
-    if (state?.status !== 'Mining' && state?.status !== 'None') {
-      setDisabledButton(false);
+    if (state?.status === "Exception" || state?.status === "Success" || state?.status === "Fail") {
+      setIsLoading(false);
       toastMessage(state);
     }
   }, [state])
 
-  console.log('state', state);
-  
+  useEffect(() => {
+    if (etherBalance && amount) {
+      const count = formatEther(etherBalance);
+      if(Number(amount) > Number(count)) {
+        setButtonText('余额不足');
+        setDisabledButton(true);
+      } else {
+        setButtonText('转移');
+        setDisabledButton(false);
+      }
+    }
+  }, [amount, etherBalance]);
 
   return (
     <>
@@ -123,8 +141,11 @@ const TransferringEthers: React.FC = () => {
                 borderRadius="25"
                 onClick={handleTransfer}
                 isDisabled={disabledButton}
+                isLoading={isLoading}
+                loadingText='正在转移中...'
+                colorScheme='teal'
               >
-                Transferred
+                {buttonText}
               </Button>
             </Center>
           </Box>
