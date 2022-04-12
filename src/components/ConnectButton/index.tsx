@@ -71,7 +71,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         borderColor: "blue.700",
       }}
     >
-      Connect to a wallet
+      连接钱包
     </Button>
   );
 }

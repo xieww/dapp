@@ -105,6 +105,7 @@ const TransferringEthers: React.FC = () => {
                     w="100%"
                     focusBorderColor="none"
                     onChange={handlesetReceipentInputChange}
+                    disabled={isLoading}
                   />
                 </InputGroup>
               </Flex>
@@ -126,6 +127,7 @@ const TransferringEthers: React.FC = () => {
                       placeholder="0.0"
                       border="0"
                       onChange={handleAmountInputChange}
+                      disabled={isLoading}
                     />
                   </NumberInput>
                 </InputGroup>
